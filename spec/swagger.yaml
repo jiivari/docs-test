@@ -9,7 +9,7 @@
     "https"
   ],
   "host": "api2.otavamedia.fi",
-  "basePath": "/subscriptions-test",
+  "basePath": "/subscriptions-dev",
   "consumes": [
     "application/json"
   ],
@@ -103,6 +103,7 @@
   },
   "definitions": {
     "subscription": {
+      "type": "object",
       "properties": {
         "subscriberId": {
           "type": "integer",
@@ -308,6 +309,7 @@
       ]
     },
     "subscriber": {
+      "type": "object",
       "description": "Saajan asiakastiedot",
       "properties": {
         "validateAddress": {
@@ -435,6 +437,7 @@
       ]
     },
     "payer": {
+      "type": "object",
       "description": "Maksajan asiakastiedot",
       "properties": {
         "validateAddress": {
@@ -587,6 +590,7 @@
       ]
     },
     "invoicing": {
+      "type": "object",
       "description": "Laskutustiedot. 01 lasku, 13 verkkomaksu. Verkkomaksulla token, paymentCard and expirationDate are mandatory",
       "properties": {
         "mode": {
