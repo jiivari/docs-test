@@ -1,0 +1,11 @@
+{
+  "generator-openapi-repo": {
+    "importExistingSpec": true,
+    "importedSpec": "C:\\Users\\jaiivari1\\Projects\\Customers\\Otava\\docs-test\\OpenAPI\\subscriptions_1.0.0.json",
+    "name": "TestCompany",
+    "repo": "jiivari/docs-test",
+    "splitSpec": false,
+    "samples": true,
+    "installSwaggerUI": true
+  }
+}

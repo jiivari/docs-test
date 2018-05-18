@@ -1,0 +1,837 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "subscriptions",
+    "version": "1.0.0",
+    "description": "Subscriptions API"
+  },
+  "schemes": [
+    "https"
+  ],
+  "host": "api2.otavamedia.fi",
+  "basePath": "/subscriptions-dev",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/subscriptions/customers": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Call completed",
+            "schema": {
+              "$ref": "#/definitions/subscriptionResponseOk"
+            }
+          },
+          "201": {
+            "description": "Synchronous call 201 OK",
+            "schema": {
+              "$ref": "#/definitions/subscriptionResponseOk"
+            }
+          },
+          "202": {
+            "description": "Asynchronous call 202 OK",
+            "schema": {
+              "$ref": "#/definitions/subscriptionResponseAsyncOk"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/subscriptionsErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "subscriptions",
+            "required": false,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/subscription"
+            }
+          },
+          {
+            "name": "x-expect",
+            "required": false,
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "description": "Creates a new subscription. Use x-expect header 202-accepted for asynchronus call. This returns a process id which can be used to get the status of the process. GET /subscriptions/customers/processes/{processId}",
+        "security": [
+          {
+            "apikeyQuery": []
+          }
+        ]
+      }
+    },
+    "/subscriptions/customers/processes/{processId}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Call completed",
+            "schema": {
+              "$ref": "#/definitions/processResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/subscriptionsErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "description": "Get processing status of customers subscriptions",
+        "security": [
+          {
+            "apikeyQuery": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "subscription": {
+      "type": "object",
+      "properties": {
+        "subscriberId": {
+          "type": "integer",
+          "description": "Saajan asiakasnumero"
+        },
+        "payerId": {
+          "type": "integer",
+          "description": "Maksajan asiakasnumero"
+        },
+        "kind": {
+          "type": "string",
+          "description": "Tilauslaji (01 - Kestotilaus, 02 - Määräaikainen, 03 - Irtonumero, 04 - Tarkistuskappale, 05 - Vapaakappale, 06 - Näytenumero)"
+        },
+        "packageId": {
+          "type": "string",
+          "description": "Tuotepakettitunnus"
+        },
+        "priceGroup": {
+          "type": "string",
+          "description": "Hintaryhmä (00 - Normaali)"
+        },
+        "type": {
+          "type": "string",
+          "description": "Tilaustapa (00-Normaali)"
+        },
+        "months": {
+          "type": "integer",
+          "description": "Tilauksen pituus kuukausina"
+        },
+        "days": {
+          "type": "integer",
+          "description": "Tilauksen pituus päivinä"
+        },
+        "startDate": {
+          "type": "string",
+          "description": "Tilauksen alkupvm, jakelu alkaa pvm (kestotilauksella säilyy alkuperäisenä)"
+        },
+        "invoicingStartDate": {
+          "type": "string",
+          "description": "Laskutuksen alkupvm, kestotilauksen jakson alkupvm"
+        },
+        "endDate": {
+          "type": "string",
+          "description": "Tilauksen päättymispvm, jakelu päättyy pvm"
+        },
+        "quantity": {
+          "type": "integer",
+          "description": "Maksuerien lukumäärä"
+        },
+        "salesPersonCode": {
+          "type": "string",
+          "description": "Myyjätunnus"
+        },
+        "receiveType": {
+          "type": "string",
+          "description": "Vastaanottotapa (01-Verkkomyynti,02-Verkkoasiointi,03-Asiakaspalvelu,04-Kampanjasivu….)"
+        },
+        "price": {
+          "type": "number",
+          "description": "Tilauksen kokonaishinta",
+          "format": "double"
+        },
+        "invoicingMode": {
+          "type": "string",
+          "description": "01-Lasku, 13-verkkomaksu"
+        },
+        "orderId": {
+          "type": "string",
+          "description": "Tilausnumero"
+        },
+        "gift": {
+          "type": "boolean",
+          "description": "NA"
+        },
+        "recommender": {
+          "type": "integer",
+          "description": "Suosittelijan asiakasnumero"
+        },
+        "criteria1": {
+          "type": "string",
+          "description": "NA"
+        },
+        "criteria2": {
+          "type": "string",
+          "description": "Uus-/jatkomyynti"
+        },
+        "criteria3": {
+          "type": "string",
+          "description": "NA"
+        },
+        "criteria4": {
+          "type": "string",
+          "description": "NA"
+        },
+        "criteria5": {
+          "type": "string",
+          "description": "NA"
+        },
+        "criteria6": {
+          "type": "string",
+          "description": "NA"
+        },
+        "freeSubscriptionsGroup": {
+          "type": "string",
+          "description": "NA"
+        },
+        "granterNumber": {
+          "type": "string",
+          "description": "NA"
+        },
+        "granterDepartment": {
+          "type": "string",
+          "description": "NA"
+        },
+        "granterUnit": {
+          "type": "string",
+          "description": "NA"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Tilauksen lisätiedot"
+        },
+        "otherSubscriptionNumber": {
+          "type": "string",
+          "description": "Muu tilausnumero (Mydigi,B-myyjien…)"
+        },
+        "cancelReason": {
+          "type": "string",
+          "description": "Peruutussyy (00 - normaalisti päättynyt tilaus, 10 - maksamatta päättynyt tilaus, muut syykoodit parametreilta)"
+        },
+        "targetGroupId": {
+          "type": "number",
+          "description": "osoitteisto kohderyhmä-id"
+        },
+        "offerReference": {
+          "type": "string",
+          "description": "Tyrkyte"
+        },
+        "subSeller": {
+          "type": "number",
+          "description": "Alamyyjä"
+        },
+        "subscriber": {
+          "$ref": "#/definitions/subscriber",
+          "description": "Saajan tiedot. Pakollinen jos Saajan asiakasnumero ei ole tiedossa"
+        },
+        "payer": {
+          "$ref": "#/definitions/payer",
+          "description": "Maksajan tiedot"
+        },
+        "productLines": {
+          "type": "array",
+          "description": "Tuoterivit",
+          "items": {
+            "$ref": "#/definitions/productLine"
+          }
+        },
+        "invoicing": {
+          "$ref": "#/definitions/invoicing",
+          "description": "Laskutustiedot"
+        },
+        "benefits": {
+          "type": "array",
+          "description": "Tilaajaedut",
+          "items": {
+            "$ref": "#/definitions/benefit"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "packageId",
+        "price",
+        "kind",
+        "priceGroup",
+        "startDate",
+        "months",
+        "quantity"
+      ]
+    },
+    "productLine": {
+      "description": "Tuoterivit",
+      "properties": {
+        "paperCode": {
+          "type": "string",
+          "description": "LehtiID, brändi"
+        },
+        "productCode": {
+          "type": "string",
+          "description": "Tuotetunnus"
+        },
+        "price": {
+          "type": "number",
+          "description": "Verollinen hinta",
+          "format": "double"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "paperCode",
+        "productCode",
+        "price"
+      ]
+    },
+    "subscriber": {
+      "type": "object",
+      "description": "Saajan asiakastiedot",
+      "properties": {
+        "validateAddress": {
+          "type": "boolean",
+          "description": "Osoitteen validointi. Validoi osoitteen Postin palvelusta. Jos validointi epäonnistuu tilausta ei tehdä"
+        },
+        "name": {
+          "type": "string",
+          "description": "Sukunimi Etunimi"
+        },
+        "coName1": {
+          "type": "string",
+          "description": "C/O nimi1"
+        },
+        "coName2": {
+          "type": "string",
+          "description": "C/O nimi2"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "Etunimi"
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Sukunimi"
+        },
+        "streetAddress": {
+          "type": "string",
+          "description": "Kadunnimi"
+        },
+        "houseNumber": {
+          "type": "string",
+          "description": "Talon numero"
+        },
+        "stairCase": {
+          "type": "string",
+          "description": "Rappu"
+        },
+        "floor": {
+          "type": "string",
+          "description": "Kerros"
+        },
+        "apartment": {
+          "type": "string",
+          "description": "Ovinumero"
+        },
+        "street2": {
+          "type": "string",
+          "description": "NA"
+        },
+        "street3": {
+          "type": "string",
+          "description": "NA"
+        },
+        "countryCode": {
+          "type": "string",
+          "description": "Maakoodi"
+        },
+        "zipCode": {
+          "type": "string",
+          "description": "Postinumero"
+        },
+        "homePhone": {
+          "type": "string",
+          "description": "Matkapuhelinnumero"
+        },
+        "workPhone": {
+          "type": "string",
+          "description": "Lankanumero"
+        },
+        "otherPhone": {
+          "type": "string",
+          "description": "Muu numero"
+        },
+        "emailAddress": {
+          "type": "string",
+          "description": "Sähköpostiosoite"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Valuuttakoodi EUR"
+        },
+        "invoicingMode": {
+          "type": "string",
+          "description": "01-Lasku, 13-verkkomaksu"
+        },
+        "bankNumber": {
+          "type": "string",
+          "description": "NA"
+        },
+        "accountNumber": {
+          "type": "string",
+          "description": "NA"
+        },
+        "collectInv": {
+          "type": "string",
+          "description": "NA"
+        },
+        "type": {
+          "type": "string",
+          "description": "NA"
+        },
+        "city": {
+          "type": "string",
+          "description": "Kaupunki"
+        },
+        "cityDistrict": {
+          "type": "string",
+          "description": "NA"
+        },
+        "consent": {
+          "type": "array",
+          "description": "lupa- ja kieltotiedot",
+          "items": {
+            "$ref": "#/definitions/consent"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "streetAddress",
+        "city",
+        "countryCode"
+      ]
+    },
+    "payer": {
+      "type": "object",
+      "description": "Maksajan asiakastiedot",
+      "properties": {
+        "validateAddress": {
+          "type": "boolean",
+          "description": "Osoitteen validointi. Validoi osoitteen Postin palvelusta. Jos validointi epäonnistuu tilausta ei tehdä"
+        },
+        "name": {
+          "type": "string",
+          "description": "Maksajan Sukunimi Etunimi"
+        },
+        "coName1": {
+          "type": "string",
+          "description": "Maksajan C/O nimi1"
+        },
+        "coName2": {
+          "type": "string",
+          "description": "Maksajan C/O nimi2"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "Maksajan Etunimi"
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Maksajan Sukunimi"
+        },
+        "streetAddress": {
+          "type": "string",
+          "description": "Maksajan Kadunnimi"
+        },
+        "houseNumber": {
+          "type": "string",
+          "description": "Maksajan Talon numero"
+        },
+        "stairCase": {
+          "type": "string",
+          "description": "Maksajan Rappu"
+        },
+        "floor": {
+          "type": "string",
+          "description": "Maksajan Kerros"
+        },
+        "apartment": {
+          "type": "string",
+          "description": "Maksajan Ovinumero"
+        },
+        "street2": {
+          "type": "string",
+          "description": "NA"
+        },
+        "street3": {
+          "type": "string",
+          "description": "NA"
+        },
+        "countryCode": {
+          "type": "string",
+          "description": "Maksajan Maakoodi"
+        },
+        "zipCode": {
+          "type": "string",
+          "description": "Maksajan Postinumero"
+        },
+        "homePhone": {
+          "type": "string",
+          "description": "Maksajan Matkapuhelinnumero"
+        },
+        "workPhone": {
+          "type": "string",
+          "description": "Maksajan Lankanumero"
+        },
+        "otherPhone": {
+          "type": "string",
+          "description": "Maksajan Muu numero"
+        },
+        "emailAddress": {
+          "type": "string",
+          "description": "Maksajan Sähköpostiosoite"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Valuuttakoodi EUR"
+        },
+        "invoicingMode": {
+          "type": "string",
+          "description": "01-Lasku, 13-verkkomaksu"
+        },
+        "bankNumber": {
+          "type": "string",
+          "description": "NA"
+        },
+        "accountNumber": {
+          "type": "string",
+          "description": "NA"
+        },
+        "collectInv": {
+          "type": "string",
+          "description": "NA"
+        },
+        "type": {
+          "type": "string",
+          "description": "NA"
+        },
+        "city": {
+          "type": "string",
+          "description": "Maksajan Kaupunki"
+        },
+        "cityDistrict": {
+          "type": "string",
+          "description": "NA"
+        },
+        "consent": {
+          "type": "array",
+          "description": "Maksajan lupa- ja kieltotiedot",
+          "items": {
+            "$ref": "#/definitions/consent"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "streetAddress",
+        "city",
+        "countryCode"
+      ]
+    },
+    "consent": {
+      "properties": {
+        "channelType": {
+          "type": "string",
+          "description": "Lupa- kieltotieto kanava (ADDRESS, CUSTOMER, ODC, EMAIL, PHONE, SMS, TOTAL)"
+        },
+        "channelValue": {
+          "type": "string",
+          "description": "Kanavan arvo. Pätee ainoastaa EMAIL ja SMS kanaviin."
+        },
+        "consentName": {
+          "type": "string",
+          "description": "NA"
+        },
+        "consentValue": {
+          "type": "string",
+          "description": "Lupa- kieltotieto. Mahdolliset arvot: OPTIN/OPTOUT/EMPTY"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "channelType",
+        "consentValue"
+      ]
+    },
+    "invoicing": {
+      "type": "object",
+      "description": "Laskutustiedot. 01 lasku, 13 verkkomaksu. Verkkomaksulla token, paymentCard and expirationDate are mandatory",
+      "properties": {
+        "mode": {
+          "type": "integer",
+          "description": "01-Lasku, 13-verkkomaksu"
+        },
+        "default": {
+          "type": "boolean",
+          "description": "Aseta laskutustieto oletukseksi"
+        },
+        "token": {
+          "type": "string",
+          "description": "PayEx maksupalvelun salausavain (luottokorttimaksut)"
+        },
+        "paymentCard": {
+          "type": "string",
+          "description": "Luottokortin numero (1234************)"
+        },
+        "expirationDate": {
+          "type": "string",
+          "description": "Kortin vanhenemispäivä (DD/MM)"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "mode"
+      ]
+    },
+    "benefit": {
+      "description": "Tilaajaedut",
+      "properties": {
+        "paperCode": {
+          "type": "string",
+          "description": "Tilaajaetukoodi"
+        },
+        "productCode": {
+          "type": "string",
+          "description": "Tilaajaetutuote"
+        },
+        "units": {
+          "type": "number",
+          "description": "Kappalemäärä"
+        },
+        "startDate": {
+          "type": "string",
+          "description": "Tilaajaedun alkamispäivä"
+        },
+        "endDate": {
+          "type": "string",
+          "description": "Tilaajaedun loppumispäivä"
+        },
+        "source": {
+          "type": "string",
+          "description": "Lähde"
+        },
+        "discount": {
+          "type": "number",
+          "description": "Alennusprosentti"
+        }
+      }
+    },
+    "subscriptionResponseOk": {
+      "properties": {
+        "result": {
+          "type": "object",
+          "properties": {
+            "subscriptionId": {
+              "type": "string",
+              "description": "Subscription ID / number"
+            },
+            "subscriberId": {
+              "type": "string",
+              "description": "subscriber ID / number"
+            },
+            "payerId": {
+              "type": "string",
+              "description": "Payer ID / number"
+            }
+          }
+        },
+        "status": {
+          "type": "string",
+          "description": "Call status"
+        },
+        "code": {
+          "type": "string",
+          "description": "Call http status code"
+        },
+        "time": {
+          "type": "number",
+          "description": "time"
+        }
+      }
+    },
+    "subscriptionResponseAsyncOk": {
+      "properties": {
+        "result": {
+          "type": "object",
+          "properties": {
+            "processId": {
+              "type": "string",
+              "description": "Process ID, use GET /subscriptions/customers/processes/{processId} to track the status"
+            }
+          }
+        },
+        "status": {
+          "type": "string",
+          "description": "Call status"
+        },
+        "code": {
+          "type": "string",
+          "description": "Call http status code"
+        },
+        "time": {
+          "type": "number",
+          "description": "Execution time in ms"
+        }
+      }
+    },
+    "subscriptionsErrorResponse": {
+      "properties": {
+        "result": {
+          "type": "string",
+          "description": "error message",
+          "example": "Parameter startDate failed validation. Expected validator: isISO8601"
+        },
+        "status": {
+          "type": "string",
+          "description": "Error type",
+          "example": "Client Error"
+        },
+        "code": {
+          "type": "number",
+          "description": "http status code",
+          "example": 400
+        },
+        "time": {
+          "type": "number",
+          "description": "Execution time"
+        }
+      },
+      "additionalProperties": false
+    },
+    "processResponse": {
+      "properties": {
+        "result": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Identifier",
+              "example": "da92d619-6dff-5768-b3ee-5f4873cf256a"
+            },
+            "resource": {
+              "type": "string",
+              "description": "Resource",
+              "example": "otavaapi-subscriptions-test-customersCreate"
+            },
+            "state": {
+              "type": "string",
+              "description": "State, possible values: unprocessed, processing, processed",
+              "example": "processing"
+            },
+            "entity": {
+              "type": "string",
+              "description": "Entity",
+              "example": "subscriptions-customers"
+            },
+            "started": {
+              "type": "integer",
+              "description": "Time Started",
+              "example": 1525084223847
+            },
+            "flags": {
+              "type": "object",
+              "properties": {
+                "validateSubscriberAddress": {
+                  "type": "boolean",
+                  "description": "The Validatesubscriberaddress Schema ",
+                  "example": true
+                },
+                "validatePayerAddress": {
+                  "type": "boolean",
+                  "description": "The Validatepayeraddress Schema ",
+                  "example": false
+                },
+                "createSubscriber": {
+                  "type": "boolean",
+                  "description": "The Createsubscriber Schema ",
+                  "example": true
+                },
+                "hasInvoicing": {
+                  "type": "boolean",
+                  "description": "The Hasinvoicing Schema ",
+                  "example": true
+                }
+              }
+            },
+            "phase": {
+              "type": "string",
+              "description": "The Phase Schema ",
+              "example": "subscription-creation"
+            },
+            "ttl": {
+              "type": "integer",
+              "description": "The Ttl Schema ",
+              "example": 7051
+            }
+          }
+        },
+        "status": {
+          "type": "string",
+          "description": "Call status",
+          "example": "Success"
+        },
+        "code": {
+          "type": "integer",
+          "description": "Call http status code",
+          "example": 200
+        },
+        "time": {
+          "type": "integer",
+          "description": "Execution time in ms",
+          "example": 341
+        }
+      }
+    }
+  },
+  "tags": [],
+  "securityDefinitions": {
+    "apikeyQuery": {
+      "type": "apiKey",
+      "name": "x-api-key",
+      "in": "header"
+    }
+  }
+}
