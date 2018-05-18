@@ -272,16 +272,7 @@
           }
         }
       },
-      "additionalProperties": false,
-      "required": [
-        "packageId",
-        "price",
-        "kind",
-        "priceGroup",
-        "startDate",
-        "months",
-        "quantity"
-      ]
+      "additionalProperties": false
     },
     "productLine": {
       "description": "Tuoterivit",
