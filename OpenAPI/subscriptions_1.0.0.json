@@ -274,7 +274,7 @@
       },
       "additionalProperties": false,
       "required": [
-        "package",
+        "packageId",
         "price",
         "kind",
         "priceGroup",
